@@ -1,13 +1,38 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+  VersionColumn,
+} from 'typeorm';
+import { Exclude } from 'class-transformer';
 
-@Entity()
+@Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
-  @Column()
-  email: string;
+  @Column({ unique: true })
+  email!: string;
 
-  @Column()
-  password: string;
+  // Importante porque con esto no se selecciona por defecto y además se excluye en la serialización
+  @Exclude()
+  @Column({ select: false })
+  password!: string;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt!: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt!: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt?: Date | null;
+
+  // Para optimistic locking (TypeORM añade WHERE version = x y autoincrementa)
+  // Esto es una estrategia para evitar que dos usuarios actualicen el mismo registro al mismo tiempo
+  @VersionColumn()
+  version!: number;
 }

@@ -1,4 +1,47 @@
-import { Controller } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe, Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
+import { CreateUserDto } from './dtos/create-user.dto';
+import { UsersService } from './users.service';
+import { FindUsersDto } from './dtos/find-users-dto';
+import { UpdateUserDto } from './dtos/update-user.dto';
 
-@Controller('users')
-export class UsersController {}
+@Controller('users/auth')
+export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
+
+  @Post('/signup')
+  createUser(@Body() body: CreateUserDto) {
+    return this.usersService.create(body);
+  }
+
+  @Get('/:id')
+  findUser(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.findOne(id);
+  }
+
+  @Get()
+  findAllUsers(@Query() dto: FindUsersDto) {
+    return this.usersService.find(dto);
+  }
+
+  @Delete('/:id')
+  deleteUser(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.delete(id);
+  }
+
+  @Patch('/:id')
+  updateUser(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: UpdateUserDto,
+  ) {
+    return this.usersService.update(id, body);
+  }
+}
