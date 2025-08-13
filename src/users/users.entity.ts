@@ -7,7 +7,7 @@ import {
   DeleteDateColumn,
   VersionColumn,
 } from 'typeorm';
-import { Exclude } from 'class-transformer';
+// import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'users' })
 export class User {
@@ -17,8 +17,10 @@ export class User {
   @Column({ unique: true })
   email!: string;
 
-  // Importante porque con esto no se selecciona por defecto y además se excluye en la serialización
-  @Exclude()
+  // Importante porque con esto no se selecciona por defecto y además se excluye en la serialización.
+  // Para algo más grande se recomienda
+  // usar DTO + interceptor
+  // @Exclude()
   @Column({ select: false })
   password!: string;
 

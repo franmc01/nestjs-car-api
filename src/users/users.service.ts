@@ -10,7 +10,7 @@ import { User } from './users.entity';
 
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
-import { FindUsersDto } from './dtos/find-users-dto';
+import { FindUsersDto } from './dtos/find-users.dto';
 
 @Injectable()
 export class UsersService {
@@ -48,7 +48,12 @@ export class UsersService {
       take: Math.min(limit ?? 20, 100),
       order: { id: 'ASC' },
     });
-    return { items, total, limit: Math.min(limit ?? 20, 100), offset };
+    return {
+      items,
+      total,
+      limit: Math.min(limit ?? 20, 100),
+      offset,
+    };
   }
 
   async update(id: number, dto: UpdateUserDto) {
