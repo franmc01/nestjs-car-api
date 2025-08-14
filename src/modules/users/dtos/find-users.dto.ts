@@ -1,5 +1,5 @@
 import { IntersectionType } from '@nestjs/mapped-types';
-import { PaginationDto } from '../../dtos/pagination.dto';
+import { PaginationDto } from '../../../shared/dtos/pagination.dto';
 import { UsersFiltersDto } from './users-filters.dto';
 
 export class FindUsersDto extends IntersectionType(

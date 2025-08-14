@@ -8,13 +8,12 @@ import {
   Patch,
   Post,
   Query,
-  UseInterceptors,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
 import { FindUsersDto } from './dtos/find-users.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
-import { Serialize } from '../interceptors/serialize/serialize.interceptor';
+import { Serialize } from '../../shared/interceptors/serialize/serialize.interceptor';
 import { UserPublicDto } from './dtos/user-public.dto';
 import { PaginatedUsersDto } from './dtos/paginated-users-dto';
 
@@ -30,7 +29,7 @@ export class UsersController {
   @Serialize(UserPublicDto)
   @Get('/:id')
   findUser(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.findOne(id);
+    return this.usersService.findOneById(id);
   }
 
   @Serialize(PaginatedUsersDto)
