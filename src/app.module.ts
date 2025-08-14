@@ -7,9 +7,6 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 
 import { User } from "./modules/users/users.entity";
 import { Report } from "./modules/reports/report.entity";
-import { Argon2HasherService } from "./shared/services/argon2-hasher.service";
-import { APP_FILTER } from "@nestjs/core";
-import { OptimisticLockFilter } from "./shared/filters/optimistic-lock/optimistic-lock.filter";
 
 @Module({
   imports: [
@@ -24,15 +21,7 @@ import { OptimisticLockFilter } from "./shared/filters/optimistic-lock/optimisti
   ],
   controllers: [AppController],
   providers: [
-    AppService,
-    {
-      provide: "IPasswordHasher",
-      useClass: Argon2HasherService
-    },
-    {
-      provide: APP_FILTER,
-      useClass: OptimisticLockFilter
-    }
+    AppService
   ]
 })
 export class AppModule {

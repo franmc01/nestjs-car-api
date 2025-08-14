@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { IPasswordHasher } from "../../shared/interfaces/IPasswordHasher";
 
@@ -7,7 +7,8 @@ import { IPasswordHasher } from "../../shared/interfaces/IPasswordHasher";
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
-    private  readonly passwordHasher: IPasswordHasher
+    @Inject('IPasswordHasher')
+    private readonly passwordHasher: IPasswordHasher
   ) {}
 
   async signin(email: string, password: string) {
