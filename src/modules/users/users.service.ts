@@ -43,6 +43,7 @@ export class UsersService {
   async findOneByEmail(email: string) {
     return await this.repository.findOne({
       where: { email: email.toLowerCase().trim() },
+      select: ['id', 'email', 'password'],
     });
   }
 
@@ -73,6 +74,7 @@ export class UsersService {
     }
 
     const updateData = Object.fromEntries(
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       Object.entries(dto).filter(([_, value]) => value !== undefined),
     );
 
