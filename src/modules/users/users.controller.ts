@@ -16,11 +16,14 @@ import { UpdateUserDto } from './dtos/update-user.dto';
 import { Serialize } from '../../shared/interceptors/serialize/serialize.interceptor';
 import { UserPublicDto } from './dtos/user-public.dto';
 import { PaginatedUsersDto } from './dtos/paginated-users-dto';
-import { AuthService } from "./auth.service";
+import { AuthService } from './auth.service';
 
 @Controller('users/auth')
 export class UsersController {
-  constructor(private readonly usersService: UsersService,private readonly authService: AuthService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly authService: AuthService,
+  ) {}
 
   @Post('/signup')
   createUser(@Body() body: CreateUserDto) {
@@ -53,13 +56,12 @@ export class UsersController {
   }
 
   @Post('/login')
-  login(@Body() body: CreateUserDto){
-    return this.authService.signin(body.email,body.password)
+  login(@Body() body: CreateUserDto) {
+    return this.authService.signin(body.email, body.password);
   }
 
   @Post('/register')
-  register(@Body() body: CreateUserDto){
-    return this.authService.signup(body.email,body.password)
+  register(@Body() body: CreateUserDto) {
+    return this.authService.signup(body.email, body.password);
   }
-
 }
