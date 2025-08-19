@@ -10,6 +10,7 @@ import {
   Query,
   Session,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
@@ -19,8 +20,12 @@ import { Serialize } from '../../shared/interceptors/serialize/serialize.interce
 import { UserPublicDto } from './dtos/user-public.dto';
 import { PaginatedUsersDto } from './dtos/paginated-users-dto';
 import { AuthService } from './auth.service';
+import { CurrentUser } from './decorators/current-user.decorator';
+import { User } from './users.entity';
+import { AuthGuard } from '../../shared/guards/auth.guard';
 
 @Controller('users/auth')
+// @UseInterceptors(CurrentUserInterceptor)
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
@@ -60,9 +65,15 @@ export class UsersController {
     return { message: 'Logged out successfully' };
   }
 
+  // @Get('/me')
+  // async me(@Session() session: Record<string, any>) {
+  //   return await this.usersService.findOneById(session.userId);
+  // }
+
   @Get('/me')
-  async me(@Session() session: Record<string, any>) {
-    return await this.usersService.findOneById(session.userId);
+  @UseGuards(AuthGuard)
+  async me(@CurrentUser() user: User) {
+    return user;
   }
 
   @Post('/signup')
